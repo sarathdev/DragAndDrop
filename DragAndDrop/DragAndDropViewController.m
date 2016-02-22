@@ -118,12 +118,29 @@ for(int i=0 ; i< imageViewArray.count; i++)
 {
     
     UITouch* mTouch = [touches anyObject];
-   // if ([mTouch.view isEqual: newtemp]) {
-        CGPoint cp = [mTouch locationInView:[self view]];
-        [[mTouch view]setCenter:CGPointMake(cp.x-oldX, cp.y-oldY)];
+    CGPoint cp = [mTouch locationInView:[self.view superview]];
     
-    
-   // }
+    //Move view only if it is kindOfClass UIImageView
+    if ([mTouch.view isKindOfClass:[UIImageView class]]) {
+        
+        
+        
+        CGPoint points = CGPointMake(cp.x-oldX, cp.y-oldY);
+        //Check if image view going outside of window bounds
+        if (points.x > 30 && points.x < self.view.frame.size.width && points.y < self.view.frame.size.height && points.y > 60) {
+            
+            //Add animation effect to dragable imageView
+            [UIView animateWithDuration:.3
+                                  delay:0.0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^ {
+                                 
+                                 
+                                 [[mTouch view]setCenter:CGPointMake(cp.x-oldX, cp.y-oldY)];                         }
+                             completion:^(BOOL finished) {}];
+        }
+        
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
